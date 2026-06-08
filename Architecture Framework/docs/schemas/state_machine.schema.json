@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Screen State Machine Schema",
+  "description": "JSON Schema для валидации State Machine документов",
+  "type": "object",
+  "required": [
+    "artifactId",
+    "traceability",
+    "purpose",
+    "states",
+    "actions",
+    "effects",
+    "transitions"
+  ],
+  "properties": {
+    "artifactId": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "format": {
+          "type": "string",
+          "pattern": "^SCREEN-\\d+$|^SCREEN-[A-Z0-9-]+$",
+          "description": "Формат идентификатора: SCREEN-<number> или SCREEN-<name>"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^SCREEN-\\d+$|^SCREEN-[A-Z0-9-]+$",
+          "description": "Уникальный идентификатор экрана"
+        }
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "required": ["featureId", "screenId"],
+      "properties": {
+        "featureId": {
+          "type": "string",
+          "pattern": "^FEATURE-\\d+$",
+          "description": "Идентификатор фичи (обязательно)"
+        },
+        "screenId": {
+          "type": "string",
+          "pattern": "^SCREEN-\\d+$|^SCREEN-[A-Z0-9-]+$",
+          "description": "Идентификатор экрана (обязательно, должен совпадать с artifactId)"
+        },
+        "relatedUseCases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Список use cases, реализуемых на экране"
+        }
+      }
+    },
+    "purpose": {
+      "type": "string",
+      "description": "Назначение State Machine"
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Список состояний экрана"
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Список действий/событий"
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Список побочных эффектов"
+    },
+    "transitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["givenState", "whenEvent", "thenState"],
+        "properties": {
+          "givenState": {
+            "type": "string",
+            "description": "Исходное состояние"
+          },
+          "whenEvent": {
+            "type": "string",
+            "description": "Событие"
+          },
+          "thenState": {
+            "type": "string",
+            "description": "Результирующее состояние"
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Побочные эффекты при переходе"
+          }
+        }
+      },
+      "description": "Таблица переходов"
+    },
+    "degradationRules": {
+      "type": "string",
+      "description": "Правила деградации"
+    },
+    "minimalTests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Минимальный набор unit-тестов"
+    }
+  }
+}
+
