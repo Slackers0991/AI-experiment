@@ -1,0 +1,230 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Behavior Slice Schema",
+  "description": "JSON Schema для валидации Behavior Slice документов",
+  "type": "object",
+  "required": [
+    "artifactId",
+    "traceability",
+    "slices"
+  ],
+  "properties": {
+    "artifactId": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "format": {
+          "type": "string",
+          "pattern": "^SLICE-\\d+$|^SLICE-[A-Z0-9-]+$",
+          "description": "Формат идентификатора: SLICE-<number> или SLICE-<descriptive-name>"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^SLICE-\\d+$|^SLICE-[A-Z0-9-]+$",
+          "description": "Уникальный идентификатор slice"
+        }
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "required": ["featureId"],
+      "properties": {
+        "featureId": {
+          "type": "string",
+          "pattern": "^FEATURE-\\d+$",
+          "description": "Идентификатор фичи (обязательно)"
+        },
+        "screenId": {
+          "type": "string",
+          "pattern": "^SCREEN-\\d+$|^SCREEN-[A-Z0-9-]+$",
+          "description": "Идентификатор экрана (если применимо)"
+        },
+        "relatedSlices": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^SLICE-\\d+$|^SLICE-[A-Z0-9-]+$"
+          },
+          "description": "Список связанных slices"
+        },
+        "apiContractIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Список операций API"
+        }
+      }
+    },
+    "slices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "sliceId",
+          "priority",
+          "context",
+          "trigger",
+          "expectedBehavior",
+          "acceptanceCriteria"
+        ],
+        "properties": {
+          "sliceId": {
+            "type": "string",
+            "pattern": "^SLICE-\\d+$|^SLICE-[A-Z0-9-]+$",
+            "description": "Идентификатор slice"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2"],
+            "description": "Приоритет slice"
+          },
+          "context": {
+            "type": "object",
+            "required": ["preconditions"],
+            "properties": {
+              "preconditions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Список предусловий"
+              }
+            }
+          },
+          "trigger": {
+            "type": "string",
+            "description": "Событие, инициирующее поведение"
+          },
+          "expectedBehavior": {
+            "type": "string",
+            "description": "Ожидаемое поведение системы"
+          },
+          "stateCoverage": {
+            "type": "string",
+            "description": "Какие состояния/переходы покрываются"
+          },
+          "degradationRules": {
+            "type": "string",
+            "description": "Правила деградации при ошибках"
+          },
+          "outOfScope": {
+            "type": "string",
+            "description": "Что не входит в slice"
+          },
+          "acceptanceCriteria": {
+            "type": "object",
+            "required": ["given", "when", "then"],
+            "properties": {
+              "given": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "when": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "then": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "implementationHints": {
+            "type": "object",
+            "properties": {
+              "fileStructure": {
+                "type": "object",
+                "properties": {
+                  "domain": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "string"
+                  },
+                  "presentation": {
+                    "type": "string"
+                  },
+                  "ui": {
+                    "type": "string"
+                  }
+                }
+              },
+              "classFunctionNames": {
+                "type": "object",
+                "properties": {
+                  "useCase": {
+                    "type": "string"
+                  },
+                  "repositoryInterface": {
+                    "type": "string"
+                  },
+                  "repositoryImplementation": {
+                    "type": "string"
+                  },
+                  "viewModel": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "uiComponent": {
+                    "type": "string"
+                  }
+                }
+              },
+              "dependencies": {
+                "type": "object",
+                "properties": {
+                  "coreModules": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "otherFeatures": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "externalLibraries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "testStructure": {
+                "type": "object",
+                "properties": {
+                  "useCaseTest": {
+                    "type": "string"
+                  },
+                  "repositoryTest": {
+                    "type": "string"
+                  },
+                  "viewModelTest": {
+                    "type": "string"
+                  },
+                  "uiTest": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
