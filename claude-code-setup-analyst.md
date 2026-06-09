@@ -298,6 +298,8 @@ allowed-tools: Read, Write, Edit, Grep, Glob
 - Что теперь нужно сделать:
 ```
 
+> ⚠️ **Согласовать с Architecture Framework.** Этот шаблон ADR — упрощённый. Во фреймворке ADR требует поля `Artifact ID` и раздела `Traceability` (см. `Architecture Framework/docs/architecture/adr/_template_adr.md`). При синхронизации `/adr` (задача WS1.1 дорожной карты `claude-framework-roadmap.md`) шаблон нужно привести к фреймворк-совместимому и хранить ADR в `docs/architecture/adr/`.
+
 ### 4.2. `.claude/skills/refine/SKILL.md` → `/refine`
 
 ```markdown
